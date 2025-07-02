@@ -27,6 +27,20 @@ const Header = () => {
           Share your thoughts, ideas, and stories with the world.  
           Powered by modern design and AI-enhanced features.
         </p>
+
+        <form className='flex items-center p-2 justify-between max-w-[35rem] mx-auto overflow-hidden border border-gray-400 bg-white rounded'>
+            <input 
+              type="text" 
+              name="search"
+              aria-label="Search for blogs"
+              placeholder="Search for blogs"
+              className='w-full h-full p-2 outline-none' 
+            />
+            <button className='px-4 py-2   bg-purple-500 text-white hover:bg-purple-600 transition hover:scale-90 '>
+              Search
+            </button>
+          </form>
+       
       </div>
     </div>
   )
