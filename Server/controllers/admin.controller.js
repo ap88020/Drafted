@@ -1,25 +1,24 @@
-import jwt from 'jsonwebtoken';
-
-export const adminLogin = async (req,res) => {
+import jwt from 'jsonwebtoken'
+export  const adminLogin = async (req,res) => {
     try {
         const {email , password} = req.body;
 
-        if(email !== process.env.ADMIN_EMAIL || password !== process.env.ADMIN_PASSWORD){
-            res.json({
-                success : false,
-                message : "Invalid Credentials"
-            })
-
-            const token = jwt.sign({email}, process.env.JWT_SECRET);
-
-            res.json({
-                success:true,
-                token
-            })
+        if(!email || !password) {
+            return res.json({success : false , message : "email or password required"});
         }
+
+        if(email !== process.env.ADMIN_EMAIL || password !== process.env.ADMIN_PASSWORD){
+            return res.json({success : false , message : "Invalid credentials"});
+        }
+
+        const token = jwt.sign({email} , process.env.JWT_SECRET, {expiresIn : 1})
+
+        return res.json({success : true , token : token});
+
     } catch (error) {
+        console.log(error);
         res.json({
-            success:false,
+            success : false,
             message : error.message
         })
     }
