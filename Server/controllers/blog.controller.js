@@ -1,6 +1,7 @@
 import fs from 'fs';
 import Blog from '../models/blog.models.js';
 import imagekit from '../config/imageKit.js';
+import { resolveSoa } from 'dns';
 
 export const addBlog = async (req, res) => {
   try {
@@ -32,10 +33,67 @@ export const addBlog = async (req, res) => {
 
     await Blog.create({title,subTitle,description,category,image, isPublished});
 
-    res.json({success:true, message:'Blog added successfully'});
+    res.status(200).json({success:true, message:'Blog added successfully'});
     
 
   } catch (err) {
-    res.json({ success: false, message: err.message });
+    res.status(401).json({ success: false, message: err.message });
   }
 };
+
+export const getAllBlog = async (req,res) => {
+  try {
+    const blogs = await Blog.find({isPublished : true});
+
+    res.status(200).json({success:true,blogs});
+
+  } catch (err) {
+    res.status(401).json({message:err.message});
+  }
+}
+
+export const getBlogById = async (req,res) => {
+
+  try {
+    const {blogId} = req.params;
+    
+    if(!blogId){
+      return res.status(400).json({succcess:false, message:"Id is missing"});
+    }
+
+    const blog = await Blog.findById(blogId);
+
+    res.status(200).json({succcess:true, blog});
+
+  } catch (error) {
+    res.status(400).json({succcess:false, message:error.message});
+  }
+
+}
+
+export const deleteById = async (req,res)=>{
+  try {
+    const { blogId } = req.body;
+    if(!blogId){
+      return res.status(401).json({succcess:true, message:"blogId is missing"});
+    }
+    await Blog.findByIdAndDelete({blogId});
+    res.status(200).json({success : true , message:"blog deleted successfully"});
+
+  } catch (err) {
+    res.status(400).json({success:false , message:err.message});
+  }
+}
+
+export const tooglePublish = async (req,res) => {
+  try {
+    const { id } = req.body;
+    const { blog } = await Blog.findById({id});
+    blog.isPublished = !blog.isPublished;
+    await blog.save();
+
+    res.status(200).json({succcess:true , message:"Blog status updated"});
+  } catch (err) {
+    res.status(200).json({success:false,message:err.message});
+  }
+}
