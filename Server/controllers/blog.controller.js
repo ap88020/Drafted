@@ -1,7 +1,7 @@
 import fs from 'fs';
 import Blog from '../models/blog.models.js';
 import imagekit from '../config/imageKit.js';
-import { resolveSoa } from 'dns';
+import Comment from '../models/comment.model.js';
 
 export const addBlog = async (req, res) => {
   try {
@@ -78,6 +78,9 @@ export const deleteById = async (req,res)=>{
       return res.status(401).json({succcess:true, message:"blogId is missing"});
     }
     await Blog.findByIdAndDelete({blogId});
+
+    await Comment.deleteMany({blog:id});
+
     res.status(200).json({success : true , message:"blog deleted successfully"});
 
   } catch (err) {
@@ -88,12 +91,43 @@ export const deleteById = async (req,res)=>{
 export const tooglePublish = async (req,res) => {
   try {
     const { id } = req.body;
-    const { blog } = await Blog.findById({id});
+    const blog  = await Blog.findById(id);
+
+
+    if (!blog) {
+      return res.status(404).json({ success: false, message: "Blog not found" });
+    }
+
     blog.isPublished = !blog.isPublished;
     await blog.save();
 
     res.status(200).json({succcess:true , message:"Blog status updated"});
   } catch (err) {
     res.status(200).json({success:false,message:err.message});
+  } 
+}
+
+export const addComment = async (req,res) => {
+  try {
+    const {blog , name , content} = req.body;
+    await Comment.create({blog,name,content});
+
+
+    res.status(200).json({success:true,message:"Comment added for review"});
+  } catch (error) {
+    res.status(400).json({success:false,message:err.message});
+  }
+}
+
+export const getBlogComments = async (req,res) => {
+  try {
+    const {blogId} = req.body;
+    const comments = await Comment.find({blog : blogId, isApproved:true}).sort({createdAt:-1});
+
+    res.status(400).json({success:false,comments});
+
+  } catch (error) {
+    res.status(400).json({success:false,message:err.message});
+    
   }
 }
