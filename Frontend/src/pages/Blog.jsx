@@ -5,6 +5,7 @@ import Navbar from '../components/Navbar';
 import Footer from '../components/Footer'
 import moment from 'moment';
 import Loader from '../components/Loader';
+
 const Blog = () => {
   const {id} = useParams();
   const [data, setData] = useState(null);
