@@ -1,7 +1,20 @@
-import React from 'react'
+import React, { useRef } from 'react'
 import { assets } from '../assets/assets';
+import { useAppContext } from '../context/AppContext';
 
 const Header = () => {
+
+  const {input,setInput} = useAppContext();
+  
+  const inputRef = useRef();
+  const submitHandler = async (e)=>{
+    e.preventDefault();
+    setInput(inputRef.current.value);
+  }
+  const setClear = () => {
+    setInput('');
+    inputRef.current.value = '';
+  }
   return (
     <div className='mx-8 sm:mx-16 xl:mx-24 relative overflow-hidden'>
       
@@ -28,8 +41,11 @@ const Header = () => {
           Powered by modern design and AI-enhanced features.
         </p>
 
-        <form className='flex items-center p-2 justify-between max-w-[35rem] mx-auto overflow-hidden border border-gray-400 bg-white rounded'>
-            <input 
+        <form
+          onSubmit={submitHandler} 
+          className='flex items-center p-2 justify-between max-w-[35rem] mx-auto overflow-hidden border border-gray-400 bg-white rounded'>
+            <input
+              ref={inputRef} 
               type="text" 
               name="search"
               aria-label="Search for blogs"
@@ -40,7 +56,11 @@ const Header = () => {
               Search
             </button>
           </form>
-       
+      </div>
+      <div className='text-center'>
+        {
+          input &&  <button onClick={setClear} className='border font-light text-xs py-1 px-3 rounded-sm shadow-slate-900 cursor-pointer'>Clear Search</button>
+        }
       </div>
     </div>
   )

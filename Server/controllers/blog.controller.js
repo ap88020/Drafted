@@ -58,15 +58,15 @@ export const getBlogById = async (req,res) => {
     const {blogId} = req.params;
     
     if(!blogId){
-      return res.status(400).json({succcess:false, message:"Id is missing"});
+      return res.status(400).json({success:false, message:"Id is missing"});
     }
 
     const blog = await Blog.findById(blogId);
 
-    res.status(200).json({succcess:true, blog});
+    res.status(200).json({success:true, blog});
 
   } catch (error) {
-    res.status(400).json({succcess:false, message:error.message});
+    res.status(400).json({success:false, message:error.message});
   }
 
 }
@@ -107,24 +107,30 @@ export const tooglePublish = async (req,res) => {
   } 
 }
 
-export const addComment = async (req,res) => {
+export const addComment = async (req, res) => {
   try {
-    const {blog , name , content} = req.body;
-    await Comment.create({blog,name,content});
+    const { blog, name, content } = req.body;
 
+    if (!blog || !name || !content) {
+      return res.status(400).json({ success: false, message: "All fields are required" });
+    }
 
-    res.status(200).json({success:true,message:"Comment added for review"});
+    await Comment.create({ blog, name, content });
+
+    res.status(200).json({ success: true, message: "Comment added for review" });
+
   } catch (error) {
-    res.status(400).json({success:false,message:err.message});
+    res.status(400).json({ success: false, message: error.message });
   }
-}
+};
+
 
 export const getBlogComments = async (req,res) => {
   try {
     const {blogId} = req.body;
     const comments = await Comment.find({blog : blogId, isApproved:true}).sort({createdAt:-1});
 
-    res.status(400).json({success:false,comments});
+    res.status(200).json({success:true,comments});
 
   } catch (error) {
     res.status(400).json({success:false,message:err.message});
