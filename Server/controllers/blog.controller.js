@@ -73,13 +73,18 @@ export const getBlogById = async (req,res) => {
 
 export const deleteById = async (req,res)=>{
   try {
-    const { blogId } = req.body;
-    if(!blogId){
-      return res.status(401).json({succcess:true, message:"blogId is missing"});
+    const { id } = req.body;
+    if(!id){
+      return res.status(401).json({success:false, message:"blogId is missing"});
     }
-    await Blog.findByIdAndDelete({blogId});
+   const deleteBlog =  await Blog.findByIdAndUpdate(id);
 
-    await Comment.deleteMany({blog:id});
+   if(!deleteBlog){
+      return res.status(401).json({success:false, message:"blog not found"});
+   }
+
+   console.log(deleteBlog);
+    await Comment.deleteMany({blog: id});
 
     res.status(200).json({success : true , message:"blog deleted successfully"});
 
@@ -90,6 +95,7 @@ export const deleteById = async (req,res)=>{
 
 export const tooglePublish = async (req,res) => {
   try {
+
     const { id } = req.body;
     const blog  = await Blog.findById(id);
 
@@ -100,10 +106,11 @@ export const tooglePublish = async (req,res) => {
 
     blog.isPublished = !blog.isPublished;
     await blog.save();
-
-    res.status(200).json({succcess:true , message:"Blog status updated"});
+    
+    res.status(200).json({success:true , message:"Blog status updated"});
+    
   } catch (err) {
-    res.status(200).json({success:false,message:err.message});
+    res.status(400).json({success:false,message:err.message});
   } 
 }
 

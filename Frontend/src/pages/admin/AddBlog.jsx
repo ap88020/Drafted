@@ -45,7 +45,7 @@ export const AddBlog = () => {
         toast.success(data.message);
         setImage(false);
         setTitle('');
-        quillRef.current.root.innerHTML=''
+        quillRef.current.root.innerHTML='' 
         setCatogry('StartUp');
       }else{
         toast.error(data.message);

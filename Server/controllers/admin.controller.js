@@ -69,7 +69,7 @@ export const deleteCommentById = async (req,res) => {
     try {
         const {id} = req.body;
         await Comment.findByIdAndDelete(id);
-        res.staus(200).json({success:true,message:"Comment deleted successfully"});
+        res.status(200).json({success:true,message:"Comment deleted successfully"});
     } catch (error) {
         res.status(400).json({success:false,message:err.message});
     }
