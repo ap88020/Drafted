@@ -43,7 +43,7 @@ export const getAllComments = async (req,res) => {
         res.status(200).json({success:true,comments});
 
     } catch (error) {
-        res.status(400).json({success:false,message:err.message});
+        res.status(400).json({success:false,message:error.message});
     }
 }
 

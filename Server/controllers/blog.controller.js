@@ -77,13 +77,13 @@ export const deleteById = async (req,res)=>{
     if(!id){
       return res.status(401).json({success:false, message:"blogId is missing"});
     }
-   const deleteBlog =  await Blog.findByIdAndUpdate(id);
+   const deleteBlog =  await Blog.findByIdAndDelete(id);
 
    if(!deleteBlog){
       return res.status(401).json({success:false, message:"blog not found"});
    }
 
-   console.log(deleteBlog);
+  //  console.log(deleteBlog);
     await Comment.deleteMany({blog: id});
 
     res.status(200).json({success : true , message:"blog deleted successfully"});

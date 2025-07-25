@@ -6,7 +6,8 @@ import toast from 'react-hot-toast';
 const TableItems = ({ blog, fetchBlogs, index }) => {
   const { axios } = useAppContext();
 
-  const { title, createdAt } = blog;
+  const { title,createdAt } = blog;    
+  console.log(blog);
   const BlogDate = new Date(createdAt);
 
   const deleteBlog = async () => {

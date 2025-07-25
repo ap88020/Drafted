@@ -1,11 +1,52 @@
-  import React from 'react'
-
-  import { assets } from '../../assets/assets';
+import React from 'react'
+import { assets } from '../../assets/assets';
+import { useAppContext } from '../../context/AppContext';
+import toast from 'react-hot-toast';
 
   const CommentTableItem = ({comment , fetchComments}) => {
 
     const {blog, createdAt , _id} = comment;
     const blogDate = new Date(createdAt);
+
+    const { axios } = useAppContext();
+
+    // console.log(comment) 
+
+    const approvedComment = async () => {
+      try {
+        const { data } = await axios.post('/api/admin/approved-comment',{id: _id});
+
+        if(data.success){
+          toast.success(data.message);
+          fetchComments();
+        }else {
+          toast.error(data.message)
+        }
+
+      } catch (error) {
+        toast.error(error.message);
+      }
+    }
+
+    const deleteComment = async () => {
+      try {
+        const confirm = window.confirm('Once you delete , Comment will remove permanently');
+        
+        if(!confirm) return;
+
+        const { data } = await axios.post('/api/admin/delete-comment',{id:_id});
+        
+        if(data.success){
+          toast.success(data.message);
+          fetchComments();
+        }else{
+          toast.error(data.message);
+        }
+
+      } catch (error) {
+        toast.error(error);
+      }
+    }
 
     return (
       <tr className='order-y border-gray-300'>
@@ -22,12 +63,12 @@
           {blogDate.toLocaleDateString()}
         </td>
         <td className='px-6 py-4' >
-          <div className='inline-flex items-center gap-4' >
+          <div onClick={approvedComment} className='inline-flex items-center gap-4' >
             {
               !comment.isApproved ? <img src={assets.star_icon} className='w-5 hover:scale-110 transition-all cursor-pointer ' /> : <p className='text-xs border-green-600 bg-green-100 text-green-600 rounded-full px-3 py-1' >Approved</p>
             }
 
-            <img src={assets.bin_icon} className='w-5 hover:scale-110 transition-all cursor-pointer' />
+            <img onClick={deleteComment} src={assets.bin_icon} className='w-5 hover:scale-110 transition-all cursor-pointer' />
           </div>
         </td>
       </tr>
