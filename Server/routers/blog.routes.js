@@ -1,5 +1,5 @@
 import express from "express";
-import { addBlog, addComment, deleteById, getAllBlog, getBlogById, getBlogComments, tooglePublish } from "../controllers/blog.controller.js";
+import { addBlog, addComment, deleteById, generateContent, getAllBlog, getBlogById, getBlogComments, tooglePublish } from "../controllers/blog.controller.js";
 import upload from "../middleware/multer.middleware.js";
 import auth from "../middleware/auth.js";
 
@@ -13,5 +13,7 @@ blogRouter.post('/toogle-publish',auth,tooglePublish);
 
 blogRouter.post('/add-comment',addComment);
 blogRouter.post('/comments',getBlogComments);
+
+blogRouter.post('/generate',auth,generateContent);
 
 export default blogRouter;

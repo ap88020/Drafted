@@ -2,6 +2,7 @@ import fs from 'fs';
 import Blog from '../models/blog.models.js';
 import imagekit from '../config/imageKit.js';
 import Comment from '../models/comment.model.js';
+import main from '../config/gemni.js'
 
 export const addBlog = async (req, res) => {
   try {
@@ -142,5 +143,18 @@ export const getBlogComments = async (req,res) => {
   } catch (error) {
     res.status(400).json({success:false,message:err.message});
     
+  }
+}
+
+export const generateContent = async (req,res) => {
+  try {
+    const {prompt} = req.body;
+    const content = await main(prompt+ 'Generate a blog content for this topic in siple text format'); 
+    
+    res.status(200).json({ success: true, content });
+
+  } catch (error) {
+    res.status(500).json({success:false, message:error.message});
+    console.log(error)
   }
 }
