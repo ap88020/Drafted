@@ -7,7 +7,7 @@ const TableItems = ({ blog, fetchBlogs, index }) => {
   const { axios } = useAppContext();
 
   const { title,createdAt } = blog;    
-  console.log(blog);
+  // console.log(blog);
   const BlogDate = new Date(createdAt);
 
   const deleteBlog = async () => {
@@ -18,7 +18,7 @@ const TableItems = ({ blog, fetchBlogs, index }) => {
 
     try {
       const { data } = await axios.post(`api/blog/delete/`, { id : blog._id });
-        console.log(data);
+        // console.log(data);
       if (data.success) {
         toast.success(data.message);
         await fetchBlogs();

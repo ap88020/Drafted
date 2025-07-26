@@ -1,14 +1,13 @@
 import React, { useEffect, useState } from 'react'
 import { comments_data } from '../../assets/assets';
-// import CommentTableItem from './CommentTableItem';
-import CommentTableItem from './commentTableItem';
+import CommentTableItem from './CommentTableItem';
 import { useAppContext } from '../../context/AppContext';
 import toast from 'react-hot-toast';
 
 
 export const Comments = () => {
   const [comments , setComments] = useState([]);
-  const [filter , setFilter] = useState('Not Approved');
+  const [filter , setFilter] = useState('Not Approved')
 
   const {axios} = useAppContext();
 

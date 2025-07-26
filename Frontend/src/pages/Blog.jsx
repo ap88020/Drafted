@@ -31,7 +31,8 @@ const Blog = () => {
 
   const fetchCommentsData = async () => {
     try {
-      const {data} = await axios.post(`api/blog/comments`,{id});
+      const {data} = await axios.get(`api/admin/comments`,{id});
+      console.log(data)
       if(data.success){
         setComments(data.comments);
       }else{
@@ -46,7 +47,7 @@ const Blog = () => {
     e.preventDefault(); 
     try {
       const {data} = await axios.post(`api/blog/add-comment`,{blog : id,name, content});
-      console.log(data);
+      // console.log(data);
       if(data.success){
         toast.success(data.message);
         setName('');

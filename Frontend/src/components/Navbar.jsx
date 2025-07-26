@@ -4,13 +4,12 @@ import { useNavigate } from 'react-router-dom'
 import { useAppContext } from '../context/AppContext'
 
 const Navbar = () => {
-    // const navigate = useNavigate();
     const {navigate , token} = useAppContext();
   return (
     <div className='flex justify-between items-center py-5 mx-8 sm:mx-20 xl:mx-32'>
         <img 
             onClick={()=> navigate('/')} 
-            src={assets.logo}
+            src={assets.new_logo}
             alt="logo" 
             className='w-3 sm:w-44 cursor-pointer'
         />

@@ -28,7 +28,7 @@ const Header = () => {
       <div className='text-center mt-20 mb-8'>
         <div className='inline-flex justify-center items-center px-6 py-1.5 gap-4 mb-4 border border-purple-400/40 bg-purple-400/40 text-sm text-purple-600 rounded-full '>
           <p>New: AI feature integrated</p>
-          <img src={assets.star_icon} alt="star_icon" className='w-2.5' />
+          <img src={assets.star_icon} alt="star_icon" className='w-2.5 animate-spin' />
         </div>
         
         <h1 className='text-3xl sm:text-6xl font-semibold sm:leading-tight text-gray-700'>
